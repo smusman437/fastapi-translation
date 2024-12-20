@@ -35,9 +35,18 @@ To run the FastAPI application, use the following command in your terminal:
 <br>```uvicorn main:app --reload```<br>
 Once the server starts, you should see output indicating it is running, typically at http://127.0.0.1:8000.
 
+ **Run API through script**:
+  First time package need for audio in system : 
+  <br> ```brew install portaudio```<br>
+  <br> ```brew install ffmpeg``<br>
+  Run the below command in virtual environment   
+  <br> ```python3 test_translation.py```<br>
+
+
 Testing the API
 Using cURL
 Open a new terminal window and run the following cURL command to test the translation API:
+
 
 
 <br>```curl -X POST "http://127.0.0.1:8000/translate/" -H "Content-Type: application/json" -d '{"text":"Hello, how are you?"}'```<br>
