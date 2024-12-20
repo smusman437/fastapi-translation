@@ -36,9 +36,11 @@ To run the FastAPI application, use the following command in your terminal:
 Once the server starts, you should see output indicating it is running, typically at http://127.0.0.1:8000.
 
  **Run API through script**:
-  First time package need for audio in system : 
+   
+   First time package need for audio in system : 
   <br> ```brew install portaudio```<br>
-  <br> ```brew install ffmpeg``<br>
+  <br> ```brew install ffmpeg```<br>
+  
   Run the below command in virtual environment   
   <br> ```python3 test_translation.py```<br>
 
