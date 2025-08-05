@@ -80,14 +80,11 @@
 
         try {
           // Audio request
-          const response = await fetch(
-            "http://127.0.0.1:3000/translate-and-speak/",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ text }),
-            }
-          );
+          const response = await fetch("/translate-and-speak/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text }),
+          });
 
           if (!response.ok) {
             const errorText = await response.text();
@@ -99,14 +96,11 @@
           new Audio(audioUrl).play();
 
           // Translation request
-          const translationResp = await fetch(
-            "http://127.0.0.1:3000/translate/",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ text }),
-            }
-          );
+          const translationResp = await fetch("/translate/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text }),
+          });
 
           if (translationResp.ok) {
             const data = await translationResp.json();
