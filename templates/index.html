@@ -24,12 +24,20 @@
         ></textarea>
       </div>
 
-      <div class="flex justify-center">
+      <div class="flex justify-center space-x-4">
         <button
           onclick="runTranslation()"
           class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded shadow"
         >
-          Translate & Speak
+          Translate
+        </button>
+        <button
+          onclick="speakText()"
+          id="speakBtn"
+          class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded shadow disabled:opacity-50"
+          disabled
+        >
+          🔊 Speak
         </button>
       </div>
 
@@ -62,13 +70,24 @@
         <h3 class="text-lg font-medium text-gray-800 mb-1">Translated Text:</h3>
         <p id="translatedText" class="text-green-700 font-semibold text-xl"></p>
       </div>
+
+      <div class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded">
+        <p class="text-sm text-yellow-800">
+          <strong>Note:</strong> This demo uses client-side text-to-speech. For
+          best results, make sure your browser supports Turkish language
+          synthesis.
+        </p>
+      </div>
     </div>
 
     <script>
+      let currentTranslation = "";
+
       async function runTranslation() {
         const text = document.getElementById("textInput").value.trim();
         const spinner = document.getElementById("loadingSpinner");
         const translatedTextEl = document.getElementById("translatedText");
+        const speakBtn = document.getElementById("speakBtn");
 
         if (!text) {
           alert("Please enter some English text.");
@@ -77,34 +96,20 @@
 
         spinner.classList.remove("hidden");
         translatedTextEl.innerText = "";
+        speakBtn.disabled = true;
 
         try {
-          // Audio request
-          const response = await fetch("/translate-and-speak/", {
+          const response = await fetch("/translate/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ text }),
           });
 
-          if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(errorText);
-          }
-
-          const audioBlob = await response.blob();
-          const audioUrl = URL.createObjectURL(audioBlob);
-          new Audio(audioUrl).play();
-
-          // Translation request
-          const translationResp = await fetch("/translate/", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ text }),
-          });
-
-          if (translationResp.ok) {
-            const data = await translationResp.json();
-            translatedTextEl.innerText = data.translated_text;
+          if (response.ok) {
+            const data = await response.json();
+            currentTranslation = data.translated_text;
+            translatedTextEl.innerText = currentTranslation;
+            speakBtn.disabled = false;
           } else {
             translatedTextEl.innerText = "Translation failed.";
           }
@@ -114,6 +119,55 @@
           spinner.classList.add("hidden");
         }
       }
+
+      function speakText() {
+        if (!currentTranslation) {
+          alert("No translation to speak.");
+          return;
+        }
+
+        if ("speechSynthesis" in window) {
+          // Cancel any ongoing speech
+          speechSynthesis.cancel();
+
+          const utterance = new SpeechSynthesisUtterance(currentTranslation);
+          utterance.lang = "tr-TR"; // Turkish language
+          utterance.rate = 0.8; // Slightly slower for clarity
+          utterance.pitch = 1.0;
+
+          // Try to find a Turkish voice
+          const voices = speechSynthesis.getVoices();
+          const turkishVoice = voices.find(
+            (voice) =>
+              voice.lang.startsWith("tr") || voice.lang.includes("Turkish")
+          );
+
+          if (turkishVoice) {
+            utterance.voice = turkishVoice;
+          }
+
+          speechSynthesis.speak(utterance);
+        } else {
+          alert("Your browser doesn't support text-to-speech.");
+        }
+      }
+
+      // Load voices when they become available
+      if ("speechSynthesis" in window) {
+        speechSynthesis.onvoiceschanged = function () {
+          // Voices are now loaded
+        };
+      }
+
+      // Allow Enter key to trigger translation
+      document
+        .getElementById("textInput")
+        .addEventListener("keypress", function (event) {
+          if (event.key === "Enter" && !event.shiftKey) {
+            event.preventDefault();
+            runTranslation();
+          }
+        });
     </script>
   </body>
 </html>
