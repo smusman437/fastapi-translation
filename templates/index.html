@@ -81,7 +81,7 @@
         try {
           // Audio request
           const response = await fetch(
-            "http://127.0.0.1:8000/translate-and-speak/",
+            "http://127.0.0.1:3000/translate-and-speak/",
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -100,7 +100,7 @@
 
           // Translation request
           const translationResp = await fetch(
-            "http://127.0.0.1:8000/translate/",
+            "http://127.0.0.1:3000/translate/",
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },

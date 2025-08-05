@@ -32,8 +32,8 @@ This is a FastAPI application that translates English text to Turkish using a fi
 
 To run the FastAPI application, use the following command in your terminal:
 
-<br>```uvicorn main:app --reload```<br>
-Once the server starts, you should see output indicating it is running, typically at http://127.0.0.1:8000.
+<br>```uvicorn main:app --host=0.0.0.0 --port=3000```<br>
+Once the server starts, you should see output indicating it is running, typically at http://127.0.0.1:3000.
 
  **Run API through script**:
    
@@ -51,7 +51,7 @@ Open a new terminal window and run the following cURL command to test the transl
 
 
 
-<br>```curl -X POST "http://127.0.0.1:8000/translate/" -H "Content-Type: application/json" -d '{"text":"Hello, how are you?"}'```<br>
+<br>```curl -X POST "http://127.0.0.1:3000/translate/" -H "Content-Type: application/json" -d '{"text":"Hello, how are you?"}'```<br>
 Expected Response
 You should receive a response like this:
 

@@ -11,7 +11,7 @@ def translate_and_play(text, speed_factor=0.8):  # Simple parameter definition
     # Send request to the API
     print("Translating and generating speech...")
     response = requests.post(
-        "http://127.0.0.1:8000/translate-and-speak/",
+        "http://127.0.0.1:3000/translate-and-speak/",
         json={"text": text}
     )
 
