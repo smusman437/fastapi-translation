@@ -13,6 +13,15 @@ import numpy as np
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 # Global variables for models (loaded once)
 tokenizer = None
 model = None
