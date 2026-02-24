@@ -1,4 +1,6 @@
 # api/index.py
+from pathlib import Path
+
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi import Request, HTTPException
@@ -6,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, Response
 from pydantic import BaseModel
 import httpx
-import os
+from mangum import Mangum
 
 app = FastAPI()
 
@@ -23,7 +25,9 @@ class TranslationRequest(BaseModel):
     text: str
 
 
-templates = Jinja2Templates(directory="templates")
+# Templates path: project root (parent of api/) so it works on Vercel serverless
+BASE_DIR = Path(__file__).resolve().parent.parent
+templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -84,8 +88,5 @@ async def translate_and_speak(request: TranslationRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
 
-# Vercel serverless handler
-
-
-def handler(event, context):
-    return app(event, context)
+# Vercel serverless handler: Mangum adapts Lambda-style (event, context) to ASGI for FastAPI
+handler = Mangum(app, lifespan="off")
