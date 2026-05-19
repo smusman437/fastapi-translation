@@ -10,3 +10,6 @@ __pycache__/
 # macOS specific files
 .DS_Store
 
+# Hugging Face model cache (used by Docker/local runs)
+.cache/
+

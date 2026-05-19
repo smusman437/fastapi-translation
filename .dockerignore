@@ -1,0 +1,15 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.git/
+.gitignore
+.DS_Store
+.cache/
+*.md
+test_translation.py
+method2.py
+vercel.json
+api/
+index.py

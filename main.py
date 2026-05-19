@@ -1,19 +1,32 @@
+from pathlib import Path
+import io
 
-
+import numpy as np
+import scipy.io.wavfile as wavfile
+import torch
+from fastapi import FastAPI, Request, Response
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from fastapi import Request
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi import FastAPI, Response
 from pydantic import BaseModel
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, VitsModel,  AutoProcessor
-import torch
+from transformers import (
+    AutoModelForSeq2SeqLM,
+    AutoProcessor,
+    AutoTokenizer,
+    VitsModel,
+)
 
-import scipy.io.wavfile as wavfile
-import io
-import numpy as np
+BASE_DIR = Path(__file__).resolve().parent
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # Translation model setup
@@ -31,7 +44,7 @@ class TranslationRequest(BaseModel):
     text: str
 
 
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 
 
 @app.get("/", response_class=HTMLResponse)

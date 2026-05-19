@@ -28,12 +28,41 @@ This is a FastAPI application that translates English text to Turkish using a fi
    Use pip to install the necessary packages for the application.
   <br> ```pip install fastapi uvicorn transformers torch sentencepiece```<br>
 
-## Running the Application
+## Running with Docker (recommended)
 
-To run the FastAPI application, use the following command in your terminal:
+Requires [Docker](https://docs.docker.com/get-docker/) installed locally.
+
+```bash
+chmod +x scripts/run-local.sh scripts/stop-local.sh
+./scripts/run-local.sh
+```
+
+The script builds the image, starts a container, and mounts `.cache/huggingface` so models are reused across runs. Open http://localhost:3000 when the container is healthy (first start may take a few minutes while models download).
+
+Stop the app:
+
+```bash
+./scripts/stop-local.sh
+```
+
+Alternatively, use Docker Compose:
+
+```bash
+docker compose up --build -d
+docker compose down
+```
+
+## Running the Application (local Python)
+
+To run the FastAPI application without Docker, use:
 
 <br>```uvicorn main:app --host=0.0.0.0 --port=3000```<br>
 Once the server starts, you should see output indicating it is running, typically at http://127.0.0.1:3000.
+
+Install Docker dependencies locally with:
+
+<br>```pip install -r requirements-docker.txt```<br>
+<br>```pip install torch --index-url https://download.pytorch.org/whl/cpu```<br>
 
  **Run API through script**:
    
