@@ -1,89 +1,72 @@
-# English to Turkish Translation API
+# fastapi-translation
 
-This is a FastAPI application that translates English text to Turkish using a fine-tuned Hugging Face model.
+English → Turkish translator API built with **FastAPI** and Hugging Face models (`ckartal/english-to-turkish-finetuned-model`).
 
+## App identity (Docker & AWS)
 
-## Requirements
+All resources use the name **`fastapi-translation`** so you can trace what runs where:
 
-- Python 3.7 or higher
-- FastAPI
-- Uvicorn
-- Transformers
-- Torch
-- SentencePiece
+| Environment | Image | Container / service |
+|-------------|-------|---------------------|
+| Local Docker | `fastapi-translation:local` | `fastapi-translation-app` |
+| AWS ECR | `{account}.dkr.ecr.../fastapi-translation:latest` | ECS container `fastapi-translation` |
+| AWS ECS | — | cluster `fastapi-translation-cluster`, service `fastapi-translation-service` |
 
-## Installation
+## Endpoints
 
-1. **Set up a Virtual Environment**:
+| Path | Description |
+|------|-------------|
+| `/` | Web UI |
+| `/health` | Health check (`{"status":"ok","app":"fastapi-translation"}`) |
+| `/apidocs` | Swagger UI |
+| `POST /translate/` | Translate JSON `{"text":"..."}` |
+| `POST /translate-and-speak/` | Translate + WAV audio |
 
-   Create a new directory for the project and navigate into it. Then, set up a virtual environment to manage dependencies.
-   <br>```mkdir fastapi-translation```<br>
-   <br>```cd fastapi-translation```<br>
-   <br>```python3 -m venv venv```<br>
-   <br>```source venv/bin/activate  # On Windows: venv\Scripts\activate```<br>
-
-
-3. **Install Required Libraries**:
-
-   Use pip to install the necessary packages for the application.
-  <br> ```pip install fastapi uvicorn transformers torch sentencepiece```<br>
-
-## Running with Docker (recommended)
-
-Requires [Docker](https://docs.docker.com/get-docker/) installed locally.
+## Quick start (local Docker)
 
 ```bash
-chmod +x scripts/run-local.sh scripts/stop-local.sh
-./scripts/run-local.sh
+chmod +x scripts/*.sh scripts/lib/common.sh
+./scripts/local.sh
+./scripts/test-api.sh http://localhost:3000
 ```
 
-The script builds the image, starts a container, and mounts `.cache/huggingface` so models are reused across runs. Open http://localhost:3000 when the container is healthy (first start may take a few minutes while models download).
+Stop: `./scripts/stop-local.sh`
 
-Stop the app:
+First boot downloads models into `.cache/huggingface` (several minutes).
+
+## AWS ECS deploy (Terraform)
+
+**Docs:** [GUIDE.md](./GUIDE.md) · [TERRAFORM.md](./TERRAFORM.md) · [PROD.md](./PROD.md)
 
 ```bash
-./scripts/stop-local.sh
+cp .env.example .env
+export AWS_PROFILE=terraform-user
+aws configure --profile terraform-user
+
+./scripts/plan.sh dev
+./scripts/deploy.sh dev    # plan → yes → apply → push image → ECS
+./scripts/status.sh
 ```
 
-Alternatively, use Docker Compose:
+| Goal | Command |
+|------|---------|
+| Local | `./scripts/local.sh` |
+| Preview infra | `./scripts/plan.sh dev` |
+| Full deploy | `./scripts/deploy.sh dev` |
+| App code only | `./scripts/redeploy-app.sh dev` |
+| Prod | `./scripts/deploy.sh prod` |
+| Destroy | `./scripts/destroy.sh dev` |
+
+**Detected config:** project `fastapi-translation`, port **3000**, health **`/health`**, **Python/FastAPI**, **ARM64** Fargate.
+
+## Local Python (without Docker)
 
 ```bash
-docker compose up --build -d
-docker compose down
+pip install -r requirements-docker.txt
+pip install torch --index-url https://download.pytorch.org/whl/cpu
+uvicorn main:app --host 0.0.0.0 --port 3000
 ```
 
-## Running the Application (local Python)
+## Vercel
 
-To run the FastAPI application without Docker, use:
-
-<br>```uvicorn main:app --host=0.0.0.0 --port=3000```<br>
-Once the server starts, you should see output indicating it is running, typically at http://127.0.0.1:3000.
-
-Install Docker dependencies locally with:
-
-<br>```pip install -r requirements-docker.txt```<br>
-<br>```pip install torch --index-url https://download.pytorch.org/whl/cpu```<br>
-
- **Run API through script**:
-   
-   First time package need for audio in system : 
-  <br> ```brew install portaudio```<br>
-  <br> ```brew install ffmpeg```<br>
-  
-  Run the below command in virtual environment   
-  <br> ```python3 test_translation.py```<br>
-
-
-Testing the API
-Using cURL
-Open a new terminal window and run the following cURL command to test the translation API:
-
-
-
-<br>```curl -X POST "http://127.0.0.1:3000/translate/" -H "Content-Type: application/json" -d '{"text":"Hello, how are you?"}'```<br>
-Expected Response
-You should receive a response like this:
-
-{
-  "translated_text": "Merhaba, nasılsın?"
-}
+Lightweight `index.py` (HTTP translation API) is deployed via `vercel.json` — separate from the Docker/ECS ML stack in `main.py`.

@@ -13,3 +13,14 @@ __pycache__/
 # Hugging Face model cache (used by Docker/local runs)
 .cache/
 
+# Environment and secrets
+.env
+
+# Terraform
+infra/.terraform/
+infra/.terraform.lock.hcl
+infra/terraform.tfstate
+infra/terraform.tfstate.backup
+infra/tfplan-*
+infra/crash.log
+

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Stop local fastapi-translation Docker container.
 set -euo pipefail
 
 CONTAINER_NAME="${CONTAINER_NAME:-fastapi-translation-app}"

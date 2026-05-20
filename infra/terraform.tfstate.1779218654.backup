@@ -1,0 +1,1182 @@
+{
+  "version": 4,
+  "terraform_version": "1.15.3",
+  "serial": 22,
+  "lineage": "bd262cec-3399-1504-e9d6-d58245c8ec93",
+  "outputs": {
+    "api_url": {
+      "value": "http://fastapi-translation-alb-295004382.us-east-1.elb.amazonaws.com",
+      "type": "string"
+    },
+    "container_port": {
+      "value": 3000,
+      "type": "number"
+    },
+    "ecr_uri": {
+      "value": "034333503043.dkr.ecr.us-east-1.amazonaws.com/fastapi-translation",
+      "type": "string"
+    },
+    "ecs_cluster_name": {
+      "value": "fastapi-translation-cluster",
+      "type": "string"
+    },
+    "ecs_service_name": {
+      "value": "fastapi-translation-service",
+      "type": "string"
+    },
+    "project_name": {
+      "value": "fastapi-translation",
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "aws_ecr_repository",
+      "name": "app",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ecr:us-east-1:034333503043:repository/fastapi-translation",
+            "encryption_configuration": [
+              {
+                "encryption_type": "AES256",
+                "kms_key": ""
+              }
+            ],
+            "force_delete": true,
+            "id": "fastapi-translation",
+            "image_scanning_configuration": [
+              {
+                "scan_on_push": true
+              }
+            ],
+            "image_tag_mutability": "MUTABLE",
+            "name": "fastapi-translation",
+            "registry_id": "034333503043",
+            "repository_url": "034333503043.dkr.ecr.us-east-1.amazonaws.com/fastapi-translation",
+            "tags": {
+              "App": "fastapi-translation",
+              "Name": "fastapi-translation"
+            },
+            "tags_all": {
+              "App": "fastapi-translation",
+              "Application": "fastapi-translation",
+              "ManagedBy": "terraform",
+              "Name": "fastapi-translation",
+              "Project": "fastapi-translation"
+            },
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiZGVsZXRlIjoxMjAwMDAwMDAwMDAwfX0="
+        }
+      ]
+    },
+    {
+      "module": "module.ecs",
+      "mode": "data",
+      "type": "aws_iam_policy_document",
+      "name": "ecs_task_assume",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "1077804475",
+            "json": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"Service\": \"ecs-tasks.amazonaws.com\"\n      }\n    }\n  ]\n}",
+            "minified_json": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":\"sts:AssumeRole\",\"Principal\":{\"Service\":\"ecs-tasks.amazonaws.com\"}}]}",
+            "override_json": null,
+            "override_policy_documents": null,
+            "policy_id": null,
+            "source_json": null,
+            "source_policy_documents": null,
+            "statement": [
+              {
+                "actions": [
+                  "sts:AssumeRole"
+                ],
+                "condition": [],
+                "effect": "Allow",
+                "not_actions": [],
+                "not_principals": [],
+                "not_resources": [],
+                "principals": [
+                  {
+                    "identifiers": [
+                      "ecs-tasks.amazonaws.com"
+                    ],
+                    "type": "Service"
+                  }
+                ],
+                "resources": [],
+                "sid": ""
+              }
+            ],
+            "version": "2012-10-17"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        }
+      ]
+    },
+    {
+      "module": "module.ecs",
+      "mode": "managed",
+      "type": "aws_cloudwatch_log_group",
+      "name": "app",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:logs:us-east-1:034333503043:log-group:/ecs/fastapi-translation",
+            "id": "/ecs/fastapi-translation",
+            "kms_key_id": "",
+            "log_group_class": "STANDARD",
+            "name": "/ecs/fastapi-translation",
+            "name_prefix": "",
+            "retention_in_days": 7,
+            "skip_destroy": false,
+            "tags": {
+              "App": "fastapi-translation",
+              "Project": "fastapi-translation"
+            },
+            "tags_all": {
+              "App": "fastapi-translation",
+              "Application": "fastapi-translation",
+              "ManagedBy": "terraform",
+              "Project": "fastapi-translation"
+            }
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA=="
+        }
+      ]
+    },
+    {
+      "module": "module.ecs",
+      "mode": "managed",
+      "type": "aws_ecs_cluster",
+      "name": "main",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ecs:us-east-1:034333503043:cluster/fastapi-translation-cluster",
+            "configuration": [],
+            "id": "arn:aws:ecs:us-east-1:034333503043:cluster/fastapi-translation-cluster",
+            "name": "fastapi-translation-cluster",
+            "service_connect_defaults": [],
+            "setting": [
+              {
+                "name": "containerInsights",
+                "value": "enabled"
+              }
+            ],
+            "tags": {
+              "App": "fastapi-translation",
+              "Name": "fastapi-translation-cluster",
+              "Project": "fastapi-translation"
+            },
+            "tags_all": {
+              "App": "fastapi-translation",
+              "Application": "fastapi-translation",
+              "ManagedBy": "terraform",
+              "Name": "fastapi-translation-cluster",
+              "Project": "fastapi-translation"
+            }
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA=="
+        }
+      ]
+    },
+    {
+      "module": "module.ecs",
+      "mode": "managed",
+      "type": "aws_ecs_service",
+      "name": "app",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "alarms": [],
+            "availability_zone_rebalancing": "DISABLED",
+            "capacity_provider_strategy": [],
+            "cluster": "arn:aws:ecs:us-east-1:034333503043:cluster/fastapi-translation-cluster",
+            "deployment_circuit_breaker": [
+              {
+                "enable": false,
+                "rollback": false
+              }
+            ],
+            "deployment_controller": [
+              {
+                "type": "ECS"
+              }
+            ],
+            "deployment_maximum_percent": 200,
+            "deployment_minimum_healthy_percent": 100,
+            "desired_count": 1,
+            "enable_ecs_managed_tags": false,
+            "enable_execute_command": false,
+            "force_delete": null,
+            "force_new_deployment": null,
+            "health_check_grace_period_seconds": 300,
+            "iam_role": "/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
+            "id": "arn:aws:ecs:us-east-1:034333503043:service/fastapi-translation-cluster/fastapi-translation-service",
+            "launch_type": "FARGATE",
+            "load_balancer": [
+              {
+                "container_name": "fastapi-translation",
+                "container_port": 3000,
+                "elb_name": "",
+                "target_group_arn": "arn:aws:elasticloadbalancing:us-east-1:034333503043:targetgroup/fastapi-translation-tg/97ff63bf5e300b18"
+              }
+            ],
+            "name": "fastapi-translation-service",
+            "network_configuration": [
+              {
+                "assign_public_ip": true,
+                "security_groups": [
+                  "sg-06d9ef63c558b6816"
+                ],
+                "subnets": [
+                  "subnet-01ac02ac5d3bdc86b",
+                  "subnet-0df84b44168b8667c"
+                ]
+              }
+            ],
+            "ordered_placement_strategy": [],
+            "placement_constraints": [],
+            "platform_version": "LATEST",
+            "propagate_tags": "NONE",
+            "scheduling_strategy": "REPLICA",
+            "service_connect_configuration": [],
+            "service_registries": [],
+            "tags": {
+              "App": "fastapi-translation",
+              "Name": "fastapi-translation-service",
+              "Project": "fastapi-translation"
+            },
+            "tags_all": {
+              "App": "fastapi-translation",
+              "Application": "fastapi-translation",
+              "ManagedBy": "terraform",
+              "Name": "fastapi-translation-service",
+              "Project": "fastapi-translation"
+            },
+            "task_definition": "arn:aws:ecs:us-east-1:034333503043:task-definition/fastapi-translation:1",
+            "timeouts": null,
+            "triggers": {},
+            "volume_configuration": [],
+            "vpc_lattice_configurations": [],
+            "wait_for_steady_state": false
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "aws_ecr_repository.app",
+            "module.ecs.aws_cloudwatch_log_group.app",
+            "module.ecs.aws_ecs_cluster.main",
+            "module.ecs.aws_ecs_task_definition.app",
+            "module.ecs.aws_iam_role.ecs_execution",
+            "module.ecs.aws_lb.main",
+            "module.ecs.aws_lb_listener.http",
+            "module.ecs.aws_lb_target_group.app",
+            "module.ecs.aws_security_group.alb",
+            "module.ecs.aws_security_group.ecs",
+            "module.ecs.data.aws_iam_policy_document.ecs_task_assume",
+            "module.networking.aws_subnet.public",
+            "module.networking.aws_vpc.main",
+            "module.networking.data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.ecs",
+      "mode": "managed",
+      "type": "aws_ecs_task_definition",
+      "name": "app",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ecs:us-east-1:034333503043:task-definition/fastapi-translation:1",
+            "arn_without_revision": "arn:aws:ecs:us-east-1:034333503043:task-definition/fastapi-translation",
+            "container_definitions": "[{\"environment\":[{\"name\":\"APP_NAME\",\"value\":\"fastapi-translation\"},{\"name\":\"HF_HOME\",\"value\":\"/root/.cache/huggingface\"},{\"name\":\"PORT\",\"value\":\"3000\"}],\"essential\":true,\"healthCheck\":{\"command\":[\"CMD-SHELL\",\"python -c \\\"import urllib.request; urllib.request.urlopen('http://127.0.0.1:3000/health')\\\"\"],\"interval\":30,\"retries\":3,\"startPeriod\":300,\"timeout\":10},\"image\":\"034333503043.dkr.ecr.us-east-1.amazonaws.com/fastapi-translation:latest\",\"logConfiguration\":{\"logDriver\":\"awslogs\",\"options\":{\"awslogs-stream-prefix\":\"ecs\",\"awslogs-group\":\"/ecs/fastapi-translation\",\"awslogs-region\":\"us-east-1\"}},\"mountPoints\":[],\"name\":\"fastapi-translation\",\"portMappings\":[{\"containerPort\":3000,\"hostPort\":3000,\"protocol\":\"tcp\"}],\"systemControls\":[],\"volumesFrom\":[]}]",
+            "cpu": "2048",
+            "enable_fault_injection": false,
+            "ephemeral_storage": [],
+            "execution_role_arn": "arn:aws:iam::034333503043:role/fastapi-translation-ecs-execution",
+            "family": "fastapi-translation",
+            "id": "fastapi-translation",
+            "inference_accelerator": [],
+            "ipc_mode": "",
+            "memory": "4096",
+            "network_mode": "awsvpc",
+            "pid_mode": "",
+            "placement_constraints": [],
+            "proxy_configuration": [],
+            "requires_compatibilities": [
+              "FARGATE"
+            ],
+            "revision": 1,
+            "runtime_platform": [
+              {
+                "cpu_architecture": "ARM64",
+                "operating_system_family": "LINUX"
+              }
+            ],
+            "skip_destroy": false,
+            "tags": {
+              "App": "fastapi-translation",
+              "Name": "fastapi-translation",
+              "Project": "fastapi-translation"
+            },
+            "tags_all": {
+              "App": "fastapi-translation",
+              "Application": "fastapi-translation",
+              "ManagedBy": "terraform",
+              "Name": "fastapi-translation",
+              "Project": "fastapi-translation"
+            },
+            "task_role_arn": "",
+            "track_latest": false,
+            "volume": []
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjEifQ==",
+          "dependencies": [
+            "aws_ecr_repository.app",
+            "module.ecs.aws_cloudwatch_log_group.app",
+            "module.ecs.aws_iam_role.ecs_execution",
+            "module.ecs.data.aws_iam_policy_document.ecs_task_assume"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.ecs",
+      "mode": "managed",
+      "type": "aws_iam_role",
+      "name": "ecs_execution",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::034333503043:role/fastapi-translation-ecs-execution",
+            "assume_role_policy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"ecs-tasks.amazonaws.com\"}}],\"Version\":\"2012-10-17\"}",
+            "create_date": "2026-05-19T19:06:16Z",
+            "description": "",
+            "force_detach_policies": false,
+            "id": "fastapi-translation-ecs-execution",
+            "inline_policy": [],
+            "managed_policy_arns": [
+              "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+            ],
+            "max_session_duration": 3600,
+            "name": "fastapi-translation-ecs-execution",
+            "name_prefix": "",
+            "path": "/",
+            "permissions_boundary": "",
+            "tags": {
+              "Project": "fastapi-translation"
+            },
+            "tags_all": {
+              "Application": "fastapi-translation",
+              "ManagedBy": "terraform",
+              "Project": "fastapi-translation"
+            },
+            "unique_id": "AROAQP7TPVZB74BJBLYRO"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.ecs.data.aws_iam_policy_document.ecs_task_assume"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.ecs",
+      "mode": "managed",
+      "type": "aws_iam_role_policy_attachment",
+      "name": "ecs_execution",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "fastapi-translation-ecs-execution-20260519190618111300000001",
+            "policy_arn": "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
+            "role": "fastapi-translation-ecs-execution"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.ecs.aws_iam_role.ecs_execution",
+            "module.ecs.data.aws_iam_policy_document.ecs_task_assume"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.ecs",
+      "mode": "managed",
+      "type": "aws_lb",
+      "name": "main",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "access_logs": [
+              {
+                "bucket": "",
+                "enabled": false,
+                "prefix": ""
+              }
+            ],
+            "arn": "arn:aws:elasticloadbalancing:us-east-1:034333503043:loadbalancer/app/fastapi-translation-alb/9143f837a40338fc",
+            "arn_suffix": "app/fastapi-translation-alb/9143f837a40338fc",
+            "client_keep_alive": 3600,
+            "connection_logs": [
+              {
+                "bucket": "",
+                "enabled": false,
+                "prefix": ""
+              }
+            ],
+            "customer_owned_ipv4_pool": "",
+            "desync_mitigation_mode": "defensive",
+            "dns_name": "fastapi-translation-alb-295004382.us-east-1.elb.amazonaws.com",
+            "dns_record_client_routing_policy": null,
+            "drop_invalid_header_fields": false,
+            "enable_cross_zone_load_balancing": true,
+            "enable_deletion_protection": false,
+            "enable_http2": true,
+            "enable_tls_version_and_cipher_suite_headers": false,
+            "enable_waf_fail_open": false,
+            "enable_xff_client_port": false,
+            "enable_zonal_shift": false,
+            "enforce_security_group_inbound_rules_on_private_link_traffic": "",
+            "id": "arn:aws:elasticloadbalancing:us-east-1:034333503043:loadbalancer/app/fastapi-translation-alb/9143f837a40338fc",
+            "idle_timeout": 60,
+            "internal": false,
+            "ip_address_type": "ipv4",
+            "ipam_pools": [],
+            "load_balancer_type": "application",
+            "minimum_load_balancer_capacity": [],
+            "name": "fastapi-translation-alb",
+            "name_prefix": "",
+            "preserve_host_header": false,
+            "security_groups": [
+              "sg-0e2a6770e79be8da0"
+            ],
+            "subnet_mapping": [
+              {
+                "allocation_id": "",
+                "ipv6_address": "",
+                "outpost_id": "",
+                "private_ipv4_address": "",
+                "subnet_id": "subnet-01ac02ac5d3bdc86b"
+              },
+              {
+                "allocation_id": "",
+                "ipv6_address": "",
+                "outpost_id": "",
+                "private_ipv4_address": "",
+                "subnet_id": "subnet-0df84b44168b8667c"
+              }
+            ],
+            "subnets": [
+              "subnet-01ac02ac5d3bdc86b",
+              "subnet-0df84b44168b8667c"
+            ],
+            "tags": {
+              "App": "fastapi-translation",
+              "Name": "fastapi-translation-alb",
+              "Project": "fastapi-translation"
+            },
+            "tags_all": {
+              "App": "fastapi-translation",
+              "Application": "fastapi-translation",
+              "ManagedBy": "terraform",
+              "Name": "fastapi-translation-alb",
+              "Project": "fastapi-translation"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-04fac7aa450550e40",
+            "xff_header_processing_mode": "append",
+            "zone_id": "Z35SXDOTRQ7X7K"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6NjAwMDAwMDAwMDAwLCJ1cGRhdGUiOjYwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "module.ecs.aws_security_group.alb",
+            "module.networking.aws_subnet.public",
+            "module.networking.aws_vpc.main",
+            "module.networking.data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.ecs",
+      "mode": "managed",
+      "type": "aws_lb_listener",
+      "name": "http",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "alpn_policy": null,
+            "arn": "arn:aws:elasticloadbalancing:us-east-1:034333503043:listener/app/fastapi-translation-alb/9143f837a40338fc/07ea931d12c30ccd",
+            "certificate_arn": null,
+            "default_action": [
+              {
+                "authenticate_cognito": [],
+                "authenticate_oidc": [],
+                "fixed_response": [],
+                "forward": [],
+                "order": 1,
+                "redirect": [],
+                "target_group_arn": "arn:aws:elasticloadbalancing:us-east-1:034333503043:targetgroup/fastapi-translation-tg/97ff63bf5e300b18",
+                "type": "forward"
+              }
+            ],
+            "id": "arn:aws:elasticloadbalancing:us-east-1:034333503043:listener/app/fastapi-translation-alb/9143f837a40338fc/07ea931d12c30ccd",
+            "load_balancer_arn": "arn:aws:elasticloadbalancing:us-east-1:034333503043:loadbalancer/app/fastapi-translation-alb/9143f837a40338fc",
+            "mutual_authentication": [],
+            "port": 80,
+            "protocol": "HTTP",
+            "routing_http_request_x_amzn_mtls_clientcert_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_issuer_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_leaf_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_serial_number_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_subject_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_validity_header_name": null,
+            "routing_http_request_x_amzn_tls_cipher_suite_header_name": null,
+            "routing_http_request_x_amzn_tls_version_header_name": null,
+            "routing_http_response_access_control_allow_credentials_header_value": "",
+            "routing_http_response_access_control_allow_headers_header_value": "",
+            "routing_http_response_access_control_allow_methods_header_value": "",
+            "routing_http_response_access_control_allow_origin_header_value": "",
+            "routing_http_response_access_control_expose_headers_header_value": "",
+            "routing_http_response_access_control_max_age_header_value": "",
+            "routing_http_response_content_security_policy_header_value": "",
+            "routing_http_response_server_enabled": true,
+            "routing_http_response_strict_transport_security_header_value": "",
+            "routing_http_response_x_content_type_options_header_value": "",
+            "routing_http_response_x_frame_options_header_value": "",
+            "ssl_policy": "",
+            "tags": null,
+            "tags_all": {
+              "Application": "fastapi-translation",
+              "ManagedBy": "terraform",
+              "Project": "fastapi-translation"
+            },
+            "tcp_idle_timeout_seconds": null,
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsInVwZGF0ZSI6MzAwMDAwMDAwMDAwfX0=",
+          "dependencies": [
+            "module.ecs.aws_lb.main",
+            "module.ecs.aws_lb_target_group.app",
+            "module.ecs.aws_security_group.alb",
+            "module.networking.aws_subnet.public",
+            "module.networking.aws_vpc.main",
+            "module.networking.data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.ecs",
+      "mode": "managed",
+      "type": "aws_lb_target_group",
+      "name": "app",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:elasticloadbalancing:us-east-1:034333503043:targetgroup/fastapi-translation-tg/97ff63bf5e300b18",
+            "arn_suffix": "targetgroup/fastapi-translation-tg/97ff63bf5e300b18",
+            "connection_termination": null,
+            "deregistration_delay": "300",
+            "health_check": [
+              {
+                "enabled": true,
+                "healthy_threshold": 2,
+                "interval": 30,
+                "matcher": "200",
+                "path": "/health",
+                "port": "traffic-port",
+                "protocol": "HTTP",
+                "timeout": 10,
+                "unhealthy_threshold": 3
+              }
+            ],
+            "id": "arn:aws:elasticloadbalancing:us-east-1:034333503043:targetgroup/fastapi-translation-tg/97ff63bf5e300b18",
+            "ip_address_type": "ipv4",
+            "lambda_multi_value_headers_enabled": false,
+            "load_balancer_arns": [],
+            "load_balancing_algorithm_type": "round_robin",
+            "load_balancing_anomaly_mitigation": "off",
+            "load_balancing_cross_zone_enabled": "use_load_balancer_configuration",
+            "name": "fastapi-translation-tg",
+            "name_prefix": "",
+            "port": 3000,
+            "preserve_client_ip": null,
+            "protocol": "HTTP",
+            "protocol_version": "HTTP1",
+            "proxy_protocol_v2": false,
+            "slow_start": 0,
+            "stickiness": [
+              {
+                "cookie_duration": 86400,
+                "cookie_name": "",
+                "enabled": false,
+                "type": "lb_cookie"
+              }
+            ],
+            "tags": {
+              "Name": "fastapi-translation-tg",
+              "Project": "fastapi-translation"
+            },
+            "tags_all": {
+              "Application": "fastapi-translation",
+              "ManagedBy": "terraform",
+              "Name": "fastapi-translation-tg",
+              "Project": "fastapi-translation"
+            },
+            "target_failover": [
+              {
+                "on_deregistration": null,
+                "on_unhealthy": null
+              }
+            ],
+            "target_group_health": [
+              {
+                "dns_failover": [
+                  {
+                    "minimum_healthy_targets_count": "1",
+                    "minimum_healthy_targets_percentage": "off"
+                  }
+                ],
+                "unhealthy_state_routing": [
+                  {
+                    "minimum_healthy_targets_count": 1,
+                    "minimum_healthy_targets_percentage": "off"
+                  }
+                ]
+              }
+            ],
+            "target_health_state": [
+              {
+                "enable_unhealthy_connection_termination": null,
+                "unhealthy_draining_interval": null
+              }
+            ],
+            "target_type": "ip",
+            "vpc_id": "vpc-04fac7aa450550e40"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.networking.aws_vpc.main"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.ecs",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "alb",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:034333503043:security-group/sg-0e2a6770e79be8da0",
+            "description": "ALB for fastapi-translation - HTTP from internet",
+            "egress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "id": "sg-0e2a6770e79be8da0",
+            "ingress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "HTTP from internet",
+                "from_port": 80,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 80
+              }
+            ],
+            "name": "fastapi-translation-alb-sg",
+            "name_prefix": "",
+            "owner_id": "034333503043",
+            "revoke_rules_on_delete": false,
+            "tags": {
+              "Name": "fastapi-translation-alb-sg",
+              "Project": "fastapi-translation"
+            },
+            "tags_all": {
+              "Application": "fastapi-translation",
+              "ManagedBy": "terraform",
+              "Name": "fastapi-translation-alb-sg",
+              "Project": "fastapi-translation"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-04fac7aa450550e40"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "module.networking.aws_vpc.main"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.ecs",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "ecs",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:034333503043:security-group/sg-06d9ef63c558b6816",
+            "description": "ECS tasks for fastapi-translation - port 3000 from ALB only",
+            "egress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "id": "sg-06d9ef63c558b6816",
+            "ingress": [
+              {
+                "cidr_blocks": [],
+                "description": "App port from ALB",
+                "from_port": 3000,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-0e2a6770e79be8da0"
+                ],
+                "self": false,
+                "to_port": 3000
+              }
+            ],
+            "name": "fastapi-translation-ecs-sg",
+            "name_prefix": "",
+            "owner_id": "034333503043",
+            "revoke_rules_on_delete": false,
+            "tags": {
+              "Name": "fastapi-translation-ecs-sg",
+              "Project": "fastapi-translation"
+            },
+            "tags_all": {
+              "Application": "fastapi-translation",
+              "ManagedBy": "terraform",
+              "Name": "fastapi-translation-ecs-sg",
+              "Project": "fastapi-translation"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-04fac7aa450550e40"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "module.ecs.aws_security_group.alb",
+            "module.networking.aws_vpc.main"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.networking",
+      "mode": "data",
+      "type": "aws_availability_zones",
+      "name": "available",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "all_availability_zones": null,
+            "exclude_names": null,
+            "exclude_zone_ids": null,
+            "filter": null,
+            "group_names": [
+              "us-east-1-zg-1"
+            ],
+            "id": "us-east-1",
+            "names": [
+              "us-east-1a",
+              "us-east-1b",
+              "us-east-1c",
+              "us-east-1d",
+              "us-east-1e",
+              "us-east-1f"
+            ],
+            "state": "available",
+            "timeouts": null,
+            "zone_ids": [
+              "use1-az6",
+              "use1-az1",
+              "use1-az2",
+              "use1-az4",
+              "use1-az3",
+              "use1-az5"
+            ]
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        }
+      ]
+    },
+    {
+      "module": "module.networking",
+      "mode": "managed",
+      "type": "aws_internet_gateway",
+      "name": "main",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:034333503043:internet-gateway/igw-02ff67b90f1464f71",
+            "id": "igw-02ff67b90f1464f71",
+            "owner_id": "034333503043",
+            "tags": {
+              "Name": "fastapi-translation-igw",
+              "Project": "fastapi-translation"
+            },
+            "tags_all": {
+              "Application": "fastapi-translation",
+              "ManagedBy": "terraform",
+              "Name": "fastapi-translation-igw",
+              "Project": "fastapi-translation"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-04fac7aa450550e40"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "module.networking.aws_vpc.main"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.networking",
+      "mode": "managed",
+      "type": "aws_route_table",
+      "name": "public",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:034333503043:route-table/rtb-0766a5dfbaeeb9952",
+            "id": "rtb-0766a5dfbaeeb9952",
+            "owner_id": "034333503043",
+            "propagating_vgws": [],
+            "route": [
+              {
+                "carrier_gateway_id": "",
+                "cidr_block": "0.0.0.0/0",
+                "core_network_arn": "",
+                "destination_prefix_list_id": "",
+                "egress_only_gateway_id": "",
+                "gateway_id": "igw-02ff67b90f1464f71",
+                "ipv6_cidr_block": "",
+                "local_gateway_id": "",
+                "nat_gateway_id": "",
+                "network_interface_id": "",
+                "transit_gateway_id": "",
+                "vpc_endpoint_id": "",
+                "vpc_peering_connection_id": ""
+              }
+            ],
+            "tags": {
+              "Name": "fastapi-translation-public-rt",
+              "Project": "fastapi-translation"
+            },
+            "tags_all": {
+              "Application": "fastapi-translation",
+              "ManagedBy": "terraform",
+              "Name": "fastapi-translation-public-rt",
+              "Project": "fastapi-translation"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-04fac7aa450550e40"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsImRlbGV0ZSI6MzAwMDAwMDAwMDAwLCJ1cGRhdGUiOjEyMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "module.networking.aws_internet_gateway.main",
+            "module.networking.aws_vpc.main"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.networking",
+      "mode": "managed",
+      "type": "aws_route_table_association",
+      "name": "public",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 0,
+          "attributes": {
+            "gateway_id": "",
+            "id": "rtbassoc-053116bf67ca77546",
+            "route_table_id": "rtb-0766a5dfbaeeb9952",
+            "subnet_id": "subnet-01ac02ac5d3bdc86b",
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsImRlbGV0ZSI6MzAwMDAwMDAwMDAwLCJ1cGRhdGUiOjEyMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "module.networking.aws_internet_gateway.main",
+            "module.networking.aws_route_table.public",
+            "module.networking.aws_subnet.public",
+            "module.networking.aws_vpc.main",
+            "module.networking.data.aws_availability_zones.available"
+          ]
+        },
+        {
+          "index_key": 1,
+          "schema_version": 0,
+          "attributes": {
+            "gateway_id": "",
+            "id": "rtbassoc-09e20b288de736c78",
+            "route_table_id": "rtb-0766a5dfbaeeb9952",
+            "subnet_id": "subnet-0df84b44168b8667c",
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsImRlbGV0ZSI6MzAwMDAwMDAwMDAwLCJ1cGRhdGUiOjEyMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "module.networking.aws_internet_gateway.main",
+            "module.networking.aws_route_table.public",
+            "module.networking.aws_subnet.public",
+            "module.networking.aws_vpc.main",
+            "module.networking.data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.networking",
+      "mode": "managed",
+      "type": "aws_subnet",
+      "name": "public",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:034333503043:subnet/subnet-01ac02ac5d3bdc86b",
+            "assign_ipv6_address_on_creation": false,
+            "availability_zone": "us-east-1a",
+            "availability_zone_id": "use1-az6",
+            "cidr_block": "10.0.0.0/24",
+            "customer_owned_ipv4_pool": "",
+            "enable_dns64": false,
+            "enable_lni_at_device_index": 0,
+            "enable_resource_name_dns_a_record_on_launch": false,
+            "enable_resource_name_dns_aaaa_record_on_launch": false,
+            "id": "subnet-01ac02ac5d3bdc86b",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_association_id": "",
+            "ipv6_native": false,
+            "map_customer_owned_ip_on_launch": false,
+            "map_public_ip_on_launch": true,
+            "outpost_arn": "",
+            "owner_id": "034333503043",
+            "private_dns_hostname_type_on_launch": "ip-name",
+            "tags": {
+              "Name": "fastapi-translation-public-1",
+              "Project": "fastapi-translation"
+            },
+            "tags_all": {
+              "Application": "fastapi-translation",
+              "ManagedBy": "terraform",
+              "Name": "fastapi-translation-public-1",
+              "Project": "fastapi-translation"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-04fac7aa450550e40"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "module.networking.aws_vpc.main",
+            "module.networking.data.aws_availability_zones.available"
+          ]
+        },
+        {
+          "index_key": 1,
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:034333503043:subnet/subnet-0df84b44168b8667c",
+            "assign_ipv6_address_on_creation": false,
+            "availability_zone": "us-east-1b",
+            "availability_zone_id": "use1-az1",
+            "cidr_block": "10.0.1.0/24",
+            "customer_owned_ipv4_pool": "",
+            "enable_dns64": false,
+            "enable_lni_at_device_index": 0,
+            "enable_resource_name_dns_a_record_on_launch": false,
+            "enable_resource_name_dns_aaaa_record_on_launch": false,
+            "id": "subnet-0df84b44168b8667c",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_association_id": "",
+            "ipv6_native": false,
+            "map_customer_owned_ip_on_launch": false,
+            "map_public_ip_on_launch": true,
+            "outpost_arn": "",
+            "owner_id": "034333503043",
+            "private_dns_hostname_type_on_launch": "ip-name",
+            "tags": {
+              "Name": "fastapi-translation-public-2",
+              "Project": "fastapi-translation"
+            },
+            "tags_all": {
+              "Application": "fastapi-translation",
+              "ManagedBy": "terraform",
+              "Name": "fastapi-translation-public-2",
+              "Project": "fastapi-translation"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-04fac7aa450550e40"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "module.networking.aws_vpc.main",
+            "module.networking.data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.networking",
+      "mode": "managed",
+      "type": "aws_vpc",
+      "name": "main",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:034333503043:vpc/vpc-04fac7aa450550e40",
+            "assign_generated_ipv6_cidr_block": false,
+            "cidr_block": "10.0.0.0/16",
+            "default_network_acl_id": "acl-0c8e3af49544815d3",
+            "default_route_table_id": "rtb-004ea800f6cffb9ec",
+            "default_security_group_id": "sg-081b4ac21bce6db19",
+            "dhcp_options_id": "dopt-0daa552fa41038d67",
+            "enable_dns_hostnames": true,
+            "enable_dns_support": true,
+            "enable_network_address_usage_metrics": false,
+            "id": "vpc-04fac7aa450550e40",
+            "instance_tenancy": "default",
+            "ipv4_ipam_pool_id": null,
+            "ipv4_netmask_length": null,
+            "ipv6_association_id": "",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_network_border_group": "",
+            "ipv6_ipam_pool_id": "",
+            "ipv6_netmask_length": 0,
+            "main_route_table_id": "rtb-004ea800f6cffb9ec",
+            "owner_id": "034333503043",
+            "tags": {
+              "Name": "fastapi-translation-vpc",
+              "Project": "fastapi-translation"
+            },
+            "tags_all": {
+              "Application": "fastapi-translation",
+              "ManagedBy": "terraform",
+              "Name": "fastapi-translation-vpc",
+              "Project": "fastapi-translation"
+            }
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjEifQ=="
+        }
+      ]
+    }
+  ],
+  "check_results": null
+}

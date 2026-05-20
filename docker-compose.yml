@@ -1,5 +1,6 @@
+# Docker Compose for fastapi-translation (local dev — same app as ECS)
 services:
-  app:
+  fastapi-translation:
     build: .
     image: fastapi-translation:local
     container_name: fastapi-translation-app

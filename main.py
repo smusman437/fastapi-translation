@@ -17,8 +17,14 @@ from transformers import (
 )
 
 BASE_DIR = Path(__file__).resolve().parent
+APP_NAME = "fastapi-translation"
 
-app = FastAPI()
+app = FastAPI(
+    title=APP_NAME,
+    description="English to Turkish translator (Hugging Face + FastAPI)",
+    docs_url="/apidocs",
+    redoc_url="/redoc",
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -45,6 +51,16 @@ class TranslationRequest(BaseModel):
 
 
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
+
+
+@app.get("/health")
+async def health():
+    """ALB/ECS health check — confirms this container runs fastapi-translation."""
+    return {
+        "status": "ok",
+        "app": APP_NAME,
+        "service": "english-to-turkish-translator",
+    }
 
 
 @app.get("/", response_class=HTMLResponse)
